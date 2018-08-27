@@ -1,4 +1,4 @@
-# Fitness Training
+# 🏋️ Fitness Training
 
 This is a simple fitness training web app built on Google's Angular application platform
 
