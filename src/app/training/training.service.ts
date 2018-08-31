@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireAuth } from 'angularfire2/auth';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
@@ -13,12 +14,24 @@ import * as fromTraining from './training.reducer';
 @Injectable()
 export class TrainingService {
   private firebaseSubs: Subscription[] = [];
+  private currentUID: string;
 
   constructor(
     private db: AngularFirestore,
     private uiService: UIService,
+    private afAuth: AngularFireAuth,
     private store: Store<fromTraining.State>
-  ) {}
+  ) {
+  }
+
+  private getCurrentUserUID() {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.currentUID = user.uid;
+        // console.log(this.currentUID);
+      }
+    });
+  }
 
   fetchAvailableExercises() {
     this.store.dispatch(new UI.StartLoading());
@@ -57,10 +70,12 @@ export class TrainingService {
     this.store.dispatch(new Training.StartTraining(selectedId));
   }
 
-  completeExercise() {
+  async completeExercise() {
+    await this.getCurrentUserUID();
     this.store.select(fromTraining.getActiveTraining).pipe(take(1)).subscribe(ex => {
       this.addDataToDatabase({
         ...ex,
+        uid: this.currentUID,
         date: new Date(),
         state: 'completed'
       });
@@ -68,10 +83,12 @@ export class TrainingService {
     });
   }
 
-  cancelExercise(progress: number) {
+  async cancelExercise(progress: number) {
+    await this.getCurrentUserUID();
     this.store.select(fromTraining.getActiveTraining).pipe(take(1)).subscribe(ex => {
       this.addDataToDatabase({
         ...ex,
+        uid: this.currentUID,
         duration: ex.duration * (progress / 100),
         calories: ex.calories * (progress / 100),
         date: new Date(),
@@ -81,10 +98,11 @@ export class TrainingService {
     });
   }
 
-  fetchCompletedOrCancelledExercises() {
+  async fetchCompletedOrCancelledExercises() {
+    await this.getCurrentUserUID();
     this.firebaseSubs.push(
       this.db
-        .collection('finishedExercises')
+        .collection('finishedExercises', ref => ref.where('uid', '==', this.currentUID))
         .valueChanges()
         .subscribe((exercises: Exercise[]) => {
           this.store.dispatch(new Training.SetFinishedTrainings(exercises));
