@@ -7,4 +7,6 @@ This is a simple fitness training web app built on Google's Angular application 
 * NgRx/Store (v6.1.0)
 * RxJS (v6.0.0)
 
+#### Back-end powered by 🔥 Firebase
+
 Live deployed app: [https://ameer157.github.io/fitness-training/](https://ameer157.github.io/fitness-training/)
