@@ -13,29 +13,28 @@ import * as fromTraining from './training.reducer';
 
 @Injectable()
 export class TrainingService {
-  private firebaseSubs: Subscription[] = [];
-  private currentUID: string;
+  private firebaseSubscriptions: Subscription[] = [];
+  private currentUserId: string;
 
   constructor(
     private db: AngularFirestore,
     private uiService: UIService,
-    private afAuth: AngularFireAuth,
+    private angularFireAuth: AngularFireAuth,
     private store: Store<fromTraining.State>
   ) {
   }
 
   private getCurrentUserUID() {
-    this.afAuth.authState.subscribe(user => {
+    this.firebaseSubscriptions.push(this.angularFireAuth.authState.subscribe(user => {
       if (user) {
-        this.currentUID = user.uid;
-        // console.log(this.currentUID);
+        this.currentUserId = user.uid;
       }
-    });
+    }));
   }
 
   fetchAvailableExercises() {
     this.store.dispatch(new UI.StartLoading());
-    this.firebaseSubs.push(
+    this.firebaseSubscriptions.push(
       this.db
         .collection('availableExercises')
         .snapshotChanges()
@@ -72,10 +71,10 @@ export class TrainingService {
 
   async completeExercise() {
     await this.getCurrentUserUID();
-    this.store.select(fromTraining.getActiveTraining).pipe(take(1)).subscribe(ex => {
+    this.store.select(fromTraining.getActiveTraining).pipe(take(1)).subscribe(exercise => {
       this.addDataToDatabase({
-        ...ex,
-        uid: this.currentUID,
+        ...exercise,
+        uid: this.currentUserId,
         date: new Date(),
         state: 'completed'
       });
@@ -85,12 +84,12 @@ export class TrainingService {
 
   async cancelExercise(progress: number) {
     await this.getCurrentUserUID();
-    this.store.select(fromTraining.getActiveTraining).pipe(take(1)).subscribe(ex => {
+    this.store.select(fromTraining.getActiveTraining).pipe(take(1)).subscribe(exercise => {
       this.addDataToDatabase({
-        ...ex,
-        uid: this.currentUID,
-        duration: ex.duration * (progress / 100),
-        calories: ex.calories * (progress / 100),
+        ...exercise,
+        uid: this.currentUserId,
+        duration: exercise.duration * (progress / 100),
+        calories: exercise.calories * (progress / 100),
         date: new Date(),
         state: 'cancelled'
       });
@@ -100,9 +99,9 @@ export class TrainingService {
 
   async fetchCompletedOrCancelledExercises() {
     await this.getCurrentUserUID();
-    this.firebaseSubs.push(
+    this.firebaseSubscriptions.push(
       this.db
-        .collection('finishedExercises', ref => ref.where('uid', '==', this.currentUID))
+        .collection('finishedExercises', ref => ref.where('uid', '==', this.currentUserId))
         .valueChanges()
         .subscribe((exercises: Exercise[]) => {
           this.store.dispatch(new Training.SetFinishedTrainings(exercises));
@@ -111,7 +110,7 @@ export class TrainingService {
   }
 
   cancelSubscriptions() {
-    this.firebaseSubs.forEach(sub => sub.unsubscribe());
+    this.firebaseSubscriptions.forEach(sub => sub.unsubscribe());
   }
 
   private addDataToDatabase(exercise: Exercise) {

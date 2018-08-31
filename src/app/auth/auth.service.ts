@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { MatSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
-
-import { User } from './user.model';
 import { AuthData } from './auth-data.model';
 import { TrainingService } from '../training/training.service';
 import { UIService } from '../shared/ui.service';
@@ -16,14 +13,15 @@ import * as Auth from './auth.actions';
 export class AuthService {
   constructor(
     private router: Router,
-    private afAuth: AngularFireAuth,
+    private angularFireAuth: AngularFireAuth,
     private trainingService: TrainingService,
     private uiService: UIService,
     private store: Store<fromRoot.State>
-  ) {}
+  ) {
+  }
 
   initAuthListener() {
-    this.afAuth.authState.subscribe(user => {
+    this.angularFireAuth.authState.subscribe(user => {
       if (user) {
         this.store.dispatch(new Auth.SetAuthenticated());
         this.router.navigate(['/training']);
@@ -38,7 +36,7 @@ export class AuthService {
   registerUser(authData: AuthData) {
     // this.uiService.loadingStateChanged.next(true);
     this.store.dispatch(new UI.StartLoading());
-    this.afAuth.auth
+    this.angularFireAuth.auth
       .createUserWithEmailAndPassword(authData.email, authData.password)
       .then(result => {
         // this.uiService.loadingStateChanged.next(false);
@@ -54,7 +52,7 @@ export class AuthService {
   login(authData: AuthData) {
     // this.uiService.loadingStateChanged.next(true);
     this.store.dispatch(new UI.StartLoading());
-    this.afAuth.auth
+    this.angularFireAuth.auth
       .signInWithEmailAndPassword(authData.email, authData.password)
       .then(result => {
         // this.uiService.loadingStateChanged.next(false);
@@ -68,6 +66,7 @@ export class AuthService {
   }
 
   logout() {
-    this.afAuth.auth.signOut();
+    this.trainingService.cancelSubscriptions();
+    this.angularFireAuth.auth.signOut();
   }
 }
