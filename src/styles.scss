@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 //@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 //@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
+//@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
 //@import '~@angular/material/prebuilt-themes/purple-green.css';
+@import 'assets/styles/scrollbar';
 
 html, body {
   font-family: 'Open Sans', sans-serif;
@@ -21,4 +22,28 @@ html, body {
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+@include scrollbar(10px, #e91e63, #dcdcdc);
+
+@mixin scrollbar($size, $foreground-color, $background-color) {
+  // For Google Chrome
+  ::-webkit-scrollbar {
+    width: $size;
+    height: $size;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $foreground-color;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $background-color;
+  }
+
+  // For Internet Explorer
+  body {
+    scrollbar-face-color: $foreground-color;
+    scrollbar-track-color: $background-color;
+  }
 }

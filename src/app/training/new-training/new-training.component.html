@@ -13,8 +13,8 @@
         <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
       </mat-card-content>
       <mat-card-actions fxLayoutAlign="center" *ngIf="!(isLoading$ | async)">
-        <button *ngIf="exercises$ | async" type="submit" mat-button [disabled]="f.invalid">Start</button>
-        <button *ngIf="!(exercises$ | async)" type="button" mat-button (click)="fetchExercises()">Fetch Again</button>
+        <button *ngIf="exercises$ | async" type="submit" color="primary" mat-fab [disabled]="f.invalid">Start</button>
+        <button *ngIf="!(exercises$ | async)" type="button" color="primary" mat-fab (click)="fetchExercises()">Fetch Again</button>
       </mat-card-actions>
     </mat-card>
   </form>
