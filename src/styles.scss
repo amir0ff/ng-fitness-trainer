@@ -13,3 +13,12 @@ html, body {
 .mat-select-panel {
   border-radius: 8px;
 }
+
+.mat-tab-body-wrapper {
+  position: absolute !important;
+  margin-top: 112px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
