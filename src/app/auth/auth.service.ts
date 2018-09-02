@@ -11,6 +11,7 @@ import * as Auth from './auth.actions';
 
 @Injectable()
 export class AuthService {
+
   constructor(
     private router: Router,
     private angularFireAuth: AngularFireAuth,
@@ -24,11 +25,8 @@ export class AuthService {
     this.angularFireAuth.authState.subscribe(user => {
       if (user) {
         this.store.dispatch(new Auth.SetAuthenticated());
-        this.router.navigate(['/training']);
       } else {
-        this.trainingService.cancelSubscriptions();
         this.store.dispatch(new Auth.SetUnauthenticated());
-        this.router.navigate(['/login']);
       }
     });
   }
@@ -57,6 +55,7 @@ export class AuthService {
       .then(result => {
         // this.uiService.loadingStateChanged.next(false);
         this.store.dispatch(new UI.StopLoading());
+        this.router.navigate(['/']);
       })
       .catch(error => {
         // this.uiService.loadingStateChanged.next(false);
@@ -68,5 +67,6 @@ export class AuthService {
   logout() {
     this.trainingService.cancelSubscriptions();
     this.angularFireAuth.auth.signOut();
+    this.router.navigate(['/login']);
   }
 }

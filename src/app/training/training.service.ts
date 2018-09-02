@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
-import 'rxjs/add/operator/map';
+import { map, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Exercise } from './exercise.model';
 import { UIService } from '../shared/ui.service';
@@ -37,8 +36,8 @@ export class TrainingService {
     this.firebaseSubscriptions.push(
       this.db
         .collection('availableExercises')
-        .snapshotChanges()
-        .map(docArray => {
+        .snapshotChanges().pipe(
+        map(docArray => {
           return docArray.map(doc => {
             return {
               id: doc.payload.doc.id,
@@ -47,7 +46,7 @@ export class TrainingService {
               calories: doc.payload.doc.data()['calories']
             };
           });
-        })
+        }))
         .subscribe(
           (exercises: Exercise[]) => {
             this.store.dispatch(new UI.StopLoading());
