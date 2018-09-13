@@ -9,4 +9,4 @@ This is a simple fitness training web app built on Google's Angular application 
 
 #### Back-end powered by 🔥 Firebase
 
-Live deployed app: [https://ameer157.github.io/ng-fitness-training/](https://ameer157.github.io/ng-fitness-training/)
+Live deployed app: [https://ng-fitness-training.firebaseapp.com/](https://ng-fitness-training.firebaseapp.com/)
