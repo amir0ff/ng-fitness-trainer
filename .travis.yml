@@ -16,8 +16,3 @@ script: # the build step
 
 after_success:
 - firebase deploy --token $FIREBASE_TOKEN --non-interactive # firebase deploy after angular-cli build
-
-notifications:
-  email: # only receive email when the build status changes (someone broke the build!)
-    on_failure: change
-    on_success: change
