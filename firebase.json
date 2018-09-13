@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/ng-fitness-training",
+    "public": "dist/ng-fitness-trainer",
     "ignore": [
       "firebase.json",
       "**/.*",

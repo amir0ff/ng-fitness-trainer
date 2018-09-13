@@ -5,12 +5,12 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyAZH6w7dCb4nc3-I75J4bvDkOcKnZi6mQs',
-    authDomain: 'ng-fitness-training.firebaseapp.com',
-    databaseURL: 'https://ng-fitness-training.firebaseio.com',
-    projectId: 'ng-fitness-training',
-    storageBucket: 'ng-fitness-training.appspot.com',
-    messagingSenderId: '711416859640'
+    apiKey: 'AIzaSyBS-EX0gWSistpklIPffxgp1xfXlcnjWRY',
+    authDomain: 'ng-fitness-trainer.firebaseapp.com',
+    databaseURL: 'https://ng-fitness-trainer.firebaseio.com',
+    projectId: 'ng-fitness-trainer',
+    storageBucket: 'ng-fitness-trainer.appspot.com',
+    messagingSenderId: '576875916663'
   }
 };
 

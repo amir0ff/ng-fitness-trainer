@@ -39,6 +39,7 @@ export class AuthService {
       .then(result => {
         // this.uiService.loadingStateChanged.next(false);
         this.store.dispatch(new UI.StopLoading());
+        this.router.navigate(['/']);
       })
       .catch(error => {
         // this.uiService.loadingStateChanged.next(false);
