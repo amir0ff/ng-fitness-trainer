@@ -1,4 +1,5 @@
 # 🏋️ Fitness Training
+[![Build Status](https://api.travis-ci.org/ameer157/fitness-training.svg?branch=master)](https://travis-ci.org/ameer157/fitness-training)
 
 This is a simple fitness training web app built on Google's Angular application platform
 ##### Technologies used:
