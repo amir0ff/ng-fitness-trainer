@@ -23,7 +23,6 @@ export class TrainingComponent implements OnInit {
   }
 
   isUserIdle() {
-    // https://stackoverflow.com/questions/667555/how-to-detect-idle-time-in-javascript-elegantly
     let timeout;
     const showSnackbar = () => {
       this.uiService.showSnackbar('Please remember to save your work!', null, 6000);
