@@ -11,4 +11,8 @@ export class UIService {
       duration: duration
     });
   }
+
+  closeSnackbar() {
+    this.snackbar.dismiss();
+  }
 }
