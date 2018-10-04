@@ -4,6 +4,8 @@ import { AuthGuard } from '../auth/auth.guard';
 import { TrainingComponent } from './training.component';
 
 const routes: Routes = [
+  // canActivate to protect route from unauthenticated user access
+  // https://www.concretepage.com/angular/angular-canload-guard-example#CanActivate
   { path: '', component: TrainingComponent, canActivate: [AuthGuard] }
 ];
 

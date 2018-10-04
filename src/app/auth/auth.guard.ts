@@ -27,6 +27,7 @@ export class AuthGuard implements CanActivate, CanLoad {
       map(user => !!user),
       tap(loggedIn => {
         if (!loggedIn) {
+          this.uiService.showSnackbar('Please Log In!', null, 3000);
           this.router.navigate(['/login']);
         }
       }));

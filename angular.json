@@ -30,7 +30,9 @@
               "src/styles.scss",
               "src/my-theme.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/smoothscroll-for-websites/SmoothScroll.js"
+            ]
           },
           "configurations": {
             "production": {
